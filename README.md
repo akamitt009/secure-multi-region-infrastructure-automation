@@ -204,13 +204,13 @@ Proof:
 
 ![Terraform](images/terraform-init-success.PNG)
 
-![RG](images/resource-groups-created.png)
+![RG](images/resource-groups-created.PNG)
 
-![Primary](images/primary-resource-group-resources.png)
+![Primary](images/primary-resource-group-resources.PNG)
 
-![Secondary](images/secondary-resource-group-resources.png)
+![Secondary](images/secondary-resource-group-resources.PNG)
 
-![VM](images/virtual-machines-overview.png)
+![VM](images/virtual-machines-overview.PNG)
 
 ---
 
@@ -236,13 +236,13 @@ Secure network segmentation.
 
 Proof:
 
-![Network](images/virtual-networks-overview.png)
+![Network](images/virtual-networks-overview.PNG)
 
-![NSG](images/network-security-groups.png)
+![NSG](images/network-security-groups.PNG)
 
-![Primary](images/primary-vnet-subnets.png)
+![Primary](images/primary-vnet-subnets.PNG)
 
-![Secondary](images/secondary-vnet-subnets.png)
+![Secondary](images/secondary-vnet-subnets.PNG)
 
 ---
 
@@ -268,11 +268,11 @@ Enterprise backend management.
 
 Proof:
 
-![Storage](images/storage-account-overview.png)
+![Storage](images/storage-account-overview.PNG)
 
-![Blob](images/blob-storage-statefile.png)
+![Blob](images/blob-storage-statefile.PNG)
 
-![Backend](images/terraform-remote-backend-proof.png)
+![Backend](images/terraform-remote-backend-proof.PNG)
 
 ---
 
@@ -292,7 +292,7 @@ Centralized monitoring.
 
 Proof:
 
-![Monitoring](images/log-analytics-workspace.png)
+![Monitoring](images/log-analytics-workspace.PNG)
 
 ---
 
@@ -332,7 +332,7 @@ Proof:
 
 ![Vault](images/vault-secret-proof.png)
 
-![Dynamic](images/vault-dynamic-credentials.png)
+![Dynamic](images/vault-dynamic-credentials.PNG)
 
 ---
 
@@ -388,9 +388,9 @@ Reusable infrastructure.
 
 Proof:
 
-![Terraform State](images/terraform-state-list.png)
+![Terraform State](images/terraform-state-list.PNG)
 
-![Module](images/terraform-module-migration-proof.png)
+![Module](images/terraform-module-migration-proof.PNG)
 
 ---
 
@@ -430,7 +430,7 @@ Automated configuration operational.
 
 Proof:
 
-![Ansible](images/ansible-configuration-proof.png)
+![Ansible](images/ansible-configuration-proof.PNG)
 
 ---
 
@@ -454,9 +454,9 @@ Scalable infrastructure architecture.
 
 Proof:
 
-![VMSS](images/vmss-proof.png)
+![VMSS](images/vmss-proof.PNG)
 
-![LB](images/load-balancer-proof.png)
+![LB](images/load-balancer-proof.PNG)
 
 ---
 
