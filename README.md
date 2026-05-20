@@ -202,7 +202,7 @@ Centralized infrastructure state.
 
 Proof:
 
-![Terraform](images/terraform-init-success.png)
+![Terraform](images/terraform-init-success.PNG)
 
 ![RG](images/resource-groups-created.png)
 
