@@ -56,7 +56,7 @@ Goal:
 
 # 🏗 Enterprise Architecture
 
-![Architecture](images/project-architecture-black.png)
+![Architecture](images/project-architecture-black.JPEG)
 
 Flow:
 
