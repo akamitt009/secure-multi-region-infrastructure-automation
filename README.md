@@ -5,16 +5,27 @@
 ![Vault](https://img.shields.io/badge/Vault-Secrets-000000?logo=vault&logoColor=white)
 ![Ansible](https://img.shields.io/badge/Ansible-Automation-EE0000?logo=ansible&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?logo=docker&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-System%20Administration-FCC624?logo=linux&logoColor=black)
+![Linux](https://img.shields.io/badge/Linux-System-FCC624?logo=linux&logoColor=black)
 ![Azure Monitor](https://img.shields.io/badge/Azure-Monitoring-00BCF2?logo=microsoftazure&logoColor=white)
 
-Enterprise-grade Azure infrastructure automation platform implementing Infrastructure as Code (IaC), Multi-Region Deployment, Disaster Recovery Architecture, HashiCorp Vault Secret Management, Runtime Secret Retrieval, Remote Backend State Management, Monitoring, and Enterprise Cloud Automation.
+Enterprise-grade Azure Infrastructure Automation Platform implementing:
+
+- Infrastructure as Code
+- Multi Region Deployment
+- Disaster Recovery
+- Runtime Secret Retrieval
+- HashiCorp Vault Integration
+- Remote Terraform Backend
+- Monitoring & Observability
+- VM Scale Sets
+- Load Balancing
+- Configuration Automation
 
 ---
 
 # 📌 Project Overview
 
-Enterprise environments often face challenges like:
+Modern enterprise environments commonly face:
 
 ❌ Manual infrastructure provisioning
 
@@ -22,93 +33,131 @@ Enterprise environments often face challenges like:
 
 ❌ Secret exposure risk
 
-❌ Lack of disaster recovery planning
-
 ❌ Configuration inconsistency
 
 ❌ Scaling limitations
 
-❌ Manual server management
+❌ Lack of disaster recovery
 
-This project was designed to solve these problems using Azure enterprise cloud engineering practices.
+❌ Manual server administration
 
-Goal:
+This project addresses those challenges using enterprise cloud engineering principles.
 
-✅ Multi-Region Infrastructure
+---
+
+# 🎯 Objectives
+
+✅ Multi Region Infrastructure
 
 ✅ Infrastructure as Code
 
-✅ Secret Management
-
 ✅ Dynamic Credentials
+
+✅ Secret Rotation
 
 ✅ Runtime Secret Retrieval
 
-✅ Remote Backend
-
-✅ Monitoring
+✅ Monitoring & Visibility
 
 ✅ Configuration Automation
 
 ✅ Enterprise Scalability
 
+✅ Disaster Recovery
+
+---
+
+# 🛠 Prerequisites
+
+Before deployment ensure required tools are installed.
+
+| Requirement | Version |
+|--------------|----------|
+| Terraform | v1.5+ |
+| Azure CLI | Latest |
+| Python | 3.10+ |
+| Docker | Latest |
+| HashiCorp Vault | Installed |
+| Ansible | Latest |
+| Azure Subscription | Required |
+
+Authenticate Azure:
+
+```bash
+az login
+```
+
+Verify Terraform:
+
+```bash
+terraform version
+```
+
+Verify Azure CLI:
+
+```bash
+az --version
+```
+
+Verify Vault:
+
+```bash
+vault version
+```
+
 ---
 
 # 🏗 Enterprise Architecture
 
-![Architecture](images/project-architecture-black.png)
+```mermaid
+graph TD
 
-Flow:
+User[Traffic Manager / End User]
 
-Terraform
+Primary[East US Hub VNet]
 
-↓
+DR[West Europe DR Region]
 
-Azure Infrastructure Provisioning
+Spoke1[Primary App Network]
 
-↓
+Spoke2[DR Application Network]
 
-Primary Region Deployment
+Terraform[Terraform Infrastructure]
 
-↓
+Vault[HashiCorp Vault]
 
-Secondary DR Region
+Backend[Azure Blob Remote Backend]
 
-↓
+VMSS[Azure VM Scale Set]
 
-Remote Backend State Management
+LB[Azure Load Balancer]
 
-↓
+Monitoring[Azure Monitor]
 
-Vault Secret Engine
+User -->|Primary Route| Primary
 
-↓
+User -->|Failover Route| DR
 
-Vault Dynamic Credentials
+Terraform --> Primary
 
-↓
+Terraform --> DR
 
-Runtime Secret Retrieval
+Terraform --> Backend
 
-↓
+Primary --> Vault
 
-Ansible Configuration
+Primary --> VMSS
 
-↓
+VMSS --> LB
 
-Docker + Nginx Automation
+Primary --> Monitoring
 
-↓
+Primary --> Spoke1
 
-Azure Monitoring
+DR --> Spoke2
 
-↓
-
-VM Scale Set
-
-↓
-
-Load Balancer
+Primary <-->|Global VNet Peering| DR
+```
 
 ---
 
@@ -119,33 +168,65 @@ Load Balancer
 | Azure | Cloud Platform |
 | Terraform | Infrastructure Provisioning |
 | Vault | Secret Management |
-| Ansible | Configuration Management |
 | Docker | Container Runtime |
-| Nginx | Web Layer |
+| Ansible | Configuration Management |
+| Azure Blob Storage | Remote Backend |
 | Azure VMSS | Auto Scaling |
 | Azure Load Balancer | Traffic Distribution |
-| Azure Blob Storage | Remote Backend |
-| Log Analytics | Monitoring |
+| Azure Monitor | Monitoring |
 | Linux | Server Administration |
+
+---
+
+# ⚙ Configuration Variables
+
+Customize deployment using:
+
+`terraform.tfvars`
+
+| Variable | Description | Example |
+|-----------|-------------|----------|
+| primary_region | Primary Azure region | East US |
+| secondary_region | DR Region | West Europe |
+| hub_prefix | Hub CIDR | 10.0.0.0/16 |
+| spoke_prefix | Spoke CIDR | 10.1.0.0/16 |
+| environment | Deployment Environment | prod |
+| vm_size | Compute SKU | Standard_B2ms |
+| backend_storage | Remote State Storage | tfstate |
+
+Example:
+
+```hcl
+primary_region="East US"
+
+secondary_region="West Europe"
+
+hub_prefix="10.0.0.0/16"
+
+environment="prod"
+
+vm_size="Standard_B2ms"
+```
 
 ---
 
 # 📂 Repository Structure
 
 ```text
+
 secure-multi-region-infrastructure-automation/
 
 ├── terraform/
 
 ├── modules/
 
-│   ├── network/
+│ ├── network/
 
-│   ├── compute/
+│ ├── compute/
 
-│   ├── security/
+│ ├── security/
 
-│   └── scaling/
+│ └── scaling/
 
 ├── ansible/
 
@@ -154,413 +235,144 @@ secure-multi-region-infrastructure-automation/
 ├── images/
 
 └── README.md
+
 ```
 
 ---
 
-# 🚀 Implementation Journey
+# 🚀 Deployment Steps
 
-## Phase 1 — Infrastructure Provisioning
+Initialize Terraform:
 
-### What I Built
+```bash
+terraform init
+```
 
-Created:
+Validate configuration:
 
-- Azure Resource Groups
+```bash
+terraform validate
+```
 
-- Virtual Networks
+Generate execution plan:
 
-- Network Security Groups
+```bash
+terraform plan
+```
 
-- Virtual Machines
+Deploy Infrastructure:
 
-- Backend Storage
+```bash
+terraform apply
+```
 
-### Why
+Destroy infrastructure:
 
-Manual provisioning creates inconsistency.
-
-Terraform automation ensures repeatable infrastructure deployment.
-
-### Problem Faced
-
-Terraform local state collaboration issue.
-
-### Root Cause
-
-Local state file risk.
-
-Infrastructure drift.
-
-### Solution
-
-Azure Blob Storage Remote Backend.
-
-### Outcome
-
-Centralized infrastructure state.
-
-Proof:
-
-![Terraform](images/terraform-init-success.PNG)
-
-![RG](images/resource-groups-created.PNG)
-
-![Primary](images/primary-resource-group-resources.PNG)
-
-![Secondary](images/secondary-resource-group-resources.PNG)
-
-![VM](images/virtual-machines-overview.PNG)
+```bash
+terraform destroy
+```
 
 ---
 
-## Phase 2 — Network Architecture
-
-### Problem
-
-Single subnet architecture enterprise security standard follow nahi karti.
-
-### Solution
-
-Implemented:
-
-- Public Subnets
-
-- Private Subnets
-
-- NSG Isolation
-
-### Outcome
-
-Secure network segmentation.
-
-Proof:
-
-![Network](images/virtual-networks-overview.PNG)
-
-![NSG](images/network-security-groups.PNG)
-
-![Primary](images/primary-vnet-subnets.PNG)
-
-![Secondary](images/secondary-vnet-subnets.PNG)
-
----
-
-## Phase 3 — Remote Backend State Management
-
-### Problem
-
-Terraform local backend collaboration risk create karta hai.
-
-### Root Cause
-
-State conflicts.
-
-Infrastructure drift.
-
-### Solution
-
-Azure Blob Storage Backend.
-
-### Outcome
-
-Enterprise backend management.
-
-Proof:
-
-![Storage](images/storage-account-overview.PNG)
-
-![Blob](images/blob-storage-statefile.PNG)
-
-![Backend](images/terraform-remote-backend-proof.PNG)
-
----
-
-## Phase 4 — Monitoring
-
-### Problem
-
-Infrastructure visibility missing.
-
-### Solution
-
-Azure Log Analytics.
-
-### Outcome
-
-Centralized monitoring.
-
-Proof:
-
-![Monitoring](images/log-analytics-workspace.PNG)
-
----
-
-## Phase 5 — HashiCorp Vault Integration
-
-### Problem
-
-Secrets hardcoding security risk create karta hai.
-
-### Implemented
-
-- Vault KV Secrets
-
-- Dynamic Credentials
-
-- Runtime API Integration
-
-### Problem Faced
-
-Vault database validation failed.
-
-### Root Cause
-
-PostgreSQL localhost binding.
-
-### Solution
-
-listen_addresses='*'
-
-pg_hba.conf update
-
-### Outcome
-
-Dynamic secret rotation operational.
-
-Proof:
-
-![Vault](images/vault-secret-proof.png)
-
-![Dynamic](images/vault-dynamic-credentials.PNG)
-
----
-
-## Phase 6 — Runtime Vault API Integration
-
-### Problem
-
-Application runtime secret pull failed.
-
-### Root Cause
-
-hvac package unavailable.
-
-### Solution
-
-Python Virtual Environment.
-
-Installed:
-
-- python3-venv
-
-- hvac
-
-### Outcome
-
-Runtime secret retrieval operational.
-
----
-
-## Phase 7 — Terraform Module Migration
-
-### Problem
-
-Direct resource blocks scalable nahi hote.
-
-### Solution
-
-Terraform modules implementation.
-
-Created:
-
-- Network Module
-
-- Compute Module
-
-- Security Module
-
-- Scaling Module
-
-### Outcome
-
-Reusable infrastructure.
-
-Proof:
-
-![Terraform State](images/terraform-state-list.PNG)
-
-![Module](images/terraform-module-migration-proof.PNG)
-
----
-
-## Phase 8 — Configuration Automation
-
-### Problem
-
-Manual package installation operational overhead create karta hai.
-
-### Solution
-
-Ansible Automation.
-
-Automated:
-
-- Docker Installation
-
-- Nginx Installation
-
-- Linux Updates
-
-### Problem Faced
-
-SSH automation failed.
-
-### Root Cause
-
-sshpass unavailable.
-
-### Solution
-
-Installed sshpass.
-
-### Outcome
-
-Automated configuration operational.
-
-Proof:
-
-![Ansible](images/ansible-configuration-proof.PNG)
-
----
-
-## Phase 9 — Enterprise Scaling
-
-### Problem
-
-Single VM architecture scalable nahi.
-
-### Solution
-
-Implemented:
-
-- VM Scale Set
-
-- Load Balancer
-
-### Outcome
-
-Scalable infrastructure architecture.
-
-Proof:
-
-![VMSS](images/vmss-proof.PNG)
-
-![LB](images/load-balancer-proof.PNG)
-
----
-
-# ⚠ Engineering Challenges Solved
-
-### Challenge 01
-
-Terraform backend conflict.
-
-Solution:
-
-Azure Remote Backend.
-
----
-
-### Challenge 02
-
-Vault DB validation failure.
-
-Solution:
-
-PostgreSQL listener configuration.
-
----
-
-### Challenge 03
-
-SSH automation failed.
-
-Solution:
-
-sshpass installation.
-
----
-
-### Challenge 04
-
-Runtime API integration failed.
-
-Solution:
-
-Python Virtual Environment.
-
----
-
-# 📈 Platform Capabilities
-
-✅ Infrastructure as Code
+# 🚀 Infrastructure Capabilities
 
 ✅ Multi Region Deployment
 
 ✅ Disaster Recovery
 
+✅ Infrastructure as Code
+
+✅ Secret Rotation
+
 ✅ Dynamic Credentials
 
-✅ Runtime Secret Pull
+✅ Runtime Secret Retrieval
 
-✅ Monitoring
+✅ Remote Backend
 
 ✅ VM Scale Set
 
 ✅ Load Balancer
 
-✅ Remote Backend
+✅ Monitoring
+
+✅ Auto Scaling
 
 ✅ Configuration Automation
 
 ---
 
-# 🧠 Skills Demonstrated
+# 🔐 Security Features
 
-- Azure Cloud
+- HashiCorp Vault Integration
+- Dynamic Credential Rotation
+- Runtime Secret Retrieval
+- Remote Backend State Security
+- NSG Isolation
+- Multi Layer Network Segmentation
+- DR Architecture
 
-- Terraform
+---
 
-- HashiCorp Vault
+# 📈 Operational Excellence
 
-- Linux Administration
+Implemented:
 
 - Infrastructure Automation
+- Terraform Modules
+- Azure Remote State Backend
+- Monitoring Visibility
+- Configuration Standardization
+- Secret Security
+- Platform Scalability
 
-- Monitoring
+---
 
-- Disaster Recovery
+# 🧠 Skills Demonstrated
 
-- Secret Management
+Azure Cloud
 
-- Networking
+Terraform
 
-- DevOps Automation
+HashiCorp Vault
 
-- Cloud Operations
+Infrastructure Automation
+
+Linux Administration
+
+Disaster Recovery
+
+DevOps Automation
+
+Cloud Operations
+
+Monitoring
+
+Networking
+
+Secret Management
+
+Configuration Management
 
 ---
 
 # 📈 Final Outcome
 
-Successfully designed and implemented a secure enterprise-grade Azure infrastructure automation platform supporting disaster recovery capability, secret security, scalable infrastructure design, monitoring visibility, and operational automation.
+Successfully designed and implemented a secure enterprise-grade Azure Infrastructure Automation Platform supporting:
+
+- Disaster Recovery
+- Multi Region Architecture
+- Secret Security
+- Infrastructure Scalability
+- Monitoring Visibility
+- Runtime Secret Retrieval
+- Configuration Automation
 
 ---
 
 # 👨‍💻 Author
 
-Amit Kumar
+### Amit Kumar
 
 Cloud Engineer
 
