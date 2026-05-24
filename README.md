@@ -5,27 +5,27 @@
 ![Vault](https://img.shields.io/badge/Vault-Secrets-000000?logo=vault&logoColor=white)
 ![Ansible](https://img.shields.io/badge/Ansible-Automation-EE0000?logo=ansible&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?logo=docker&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-System-FCC624?logo=linux&logoColor=black)
+![Linux](https://img.shields.io/badge/Linux-System%20Administration-FCC624?logo=linux&logoColor=black)
 ![Azure Monitor](https://img.shields.io/badge/Azure-Monitoring-00BCF2?logo=microsoftazure&logoColor=white)
 
 Enterprise-grade Azure Infrastructure Automation Platform implementing:
 
-- Infrastructure as Code
+- Infrastructure as Code (IaC)
 - Multi Region Deployment
-- Disaster Recovery
+- Disaster Recovery Architecture
 - Runtime Secret Retrieval
 - HashiCorp Vault Integration
-- Remote Terraform Backend
+- Remote Backend State Management
 - Monitoring & Observability
 - VM Scale Sets
-- Load Balancing
 - Configuration Automation
+- Load Balancing
 
 ---
 
 # 📌 Project Overview
 
-Modern enterprise environments commonly face:
+Enterprise cloud environments often struggle with:
 
 ❌ Manual infrastructure provisioning
 
@@ -33,55 +33,55 @@ Modern enterprise environments commonly face:
 
 ❌ Secret exposure risk
 
+❌ Lack of disaster recovery planning
+
 ❌ Configuration inconsistency
 
 ❌ Scaling limitations
 
-❌ Lack of disaster recovery
+❌ Manual server management
 
-❌ Manual server administration
-
-This project addresses those challenges using enterprise cloud engineering principles.
+This project solves these challenges using enterprise Azure cloud engineering practices.
 
 ---
 
 # 🎯 Objectives
 
-✅ Multi Region Infrastructure
-
 ✅ Infrastructure as Code
+
+✅ Multi Region Deployment
+
+✅ Secret Security
 
 ✅ Dynamic Credentials
 
-✅ Secret Rotation
+✅ Disaster Recovery
+
+✅ Monitoring
 
 ✅ Runtime Secret Retrieval
 
-✅ Monitoring & Visibility
-
-✅ Configuration Automation
-
 ✅ Enterprise Scalability
 
-✅ Disaster Recovery
+✅ Configuration Automation
 
 ---
 
 # 🛠 Prerequisites
 
-Before deployment ensure required tools are installed.
+Before deployment ensure required dependencies are installed.
 
 | Requirement | Version |
 |--------------|----------|
 | Terraform | v1.5+ |
 | Azure CLI | Latest |
+| Azure Subscription | Required |
 | Python | 3.10+ |
 | Docker | Latest |
-| HashiCorp Vault | Installed |
-| Ansible | Latest |
-| Azure Subscription | Required |
+| Vault | Installed |
+| Ansible | Installed |
 
-Authenticate Azure:
+Azure authentication:
 
 ```bash
 az login
@@ -112,13 +112,13 @@ vault version
 ```mermaid
 graph TD
 
-User[Traffic Manager / End User]
+User[Traffic Manager / User]
 
 Primary[East US Hub VNet]
 
-DR[West Europe DR Region]
+Secondary[West Europe DR Region]
 
-Spoke1[Primary App Network]
+Spoke1[Primary Application Network]
 
 Spoke2[DR Application Network]
 
@@ -126,21 +126,21 @@ Terraform[Terraform Infrastructure]
 
 Vault[HashiCorp Vault]
 
-Backend[Azure Blob Remote Backend]
+Backend[Azure Blob Backend]
 
 VMSS[Azure VM Scale Set]
 
 LB[Azure Load Balancer]
 
-Monitoring[Azure Monitor]
+Monitor[Azure Monitor]
 
 User -->|Primary Route| Primary
 
-User -->|Failover Route| DR
+User -->|Failover Route| Secondary
 
 Terraform --> Primary
 
-Terraform --> DR
+Terraform --> Secondary
 
 Terraform --> Backend
 
@@ -150,13 +150,14 @@ Primary --> VMSS
 
 VMSS --> LB
 
-Primary --> Monitoring
+Primary --> Monitor
 
 Primary --> Spoke1
 
-DR --> Spoke2
+Secondary --> Spoke2
 
-Primary <-->|Global VNet Peering| DR
+Primary <-->|Global Peering| Secondary
+
 ```
 
 ---
@@ -168,31 +169,30 @@ Primary <-->|Global VNet Peering| DR
 | Azure | Cloud Platform |
 | Terraform | Infrastructure Provisioning |
 | Vault | Secret Management |
+| Ansible | Configuration Automation |
 | Docker | Container Runtime |
-| Ansible | Configuration Management |
 | Azure Blob Storage | Remote Backend |
-| Azure VMSS | Auto Scaling |
+| VM Scale Set | Auto Scaling |
 | Azure Load Balancer | Traffic Distribution |
 | Azure Monitor | Monitoring |
-| Linux | Server Administration |
+| Linux | System Administration |
 
 ---
 
 # ⚙ Configuration Variables
 
-Customize deployment using:
+Modify deployment behavior using:
 
-`terraform.tfvars`
+terraform.tfvars
 
-| Variable | Description | Example |
-|-----------|-------------|----------|
-| primary_region | Primary Azure region | East US |
-| secondary_region | DR Region | West Europe |
-| hub_prefix | Hub CIDR | 10.0.0.0/16 |
-| spoke_prefix | Spoke CIDR | 10.1.0.0/16 |
-| environment | Deployment Environment | prod |
-| vm_size | Compute SKU | Standard_B2ms |
-| backend_storage | Remote State Storage | tfstate |
+| Variable | Description |
+|-----------|-------------|
+| primary_region | Primary deployment region |
+| secondary_region | Disaster Recovery region |
+| hub_prefix | Hub VNet CIDR |
+| spoke_prefix | Spoke CIDR |
+| vm_size | Compute SKU |
+| environment | Environment Name |
 
 Example:
 
@@ -242,31 +242,31 @@ secure-multi-region-infrastructure-automation/
 
 # 🚀 Deployment Steps
 
-Initialize Terraform:
+Initialize:
 
 ```bash
 terraform init
 ```
 
-Validate configuration:
+Validate:
 
 ```bash
 terraform validate
 ```
 
-Generate execution plan:
+Execution Plan:
 
 ```bash
 terraform plan
 ```
 
-Deploy Infrastructure:
+Deploy:
 
 ```bash
 terraform apply
 ```
 
-Destroy infrastructure:
+Destroy:
 
 ```bash
 terraform destroy
@@ -274,63 +274,179 @@ terraform destroy
 
 ---
 
-# 🚀 Infrastructure Capabilities
+# 🚀 Implementation Journey
+
+## Phase 1 — Infrastructure Provisioning
+
+### Problem
+
+Infrastructure provisioning inconsistency.
+
+### Solution
+
+Terraform automation.
+
+### Outcome
+
+Centralized deployment.
+
+### Proof
+
+![Terraform](images/terraform-init-success.PNG)
+
+![RG](images/resource-groups-created.PNG)
+
+![Primary](images/primary-resource-group-resources.PNG)
+
+![Secondary](images/secondary-resource-group-resources.PNG)
+
+![VM](images/virtual-machines-overview.PNG)
+
+---
+
+## Phase 2 — Network Architecture
+
+### Solution
+
+Implemented:
+
+- Public Subnets
+- Private Subnets
+- NSG Isolation
+
+### Proof
+
+![Network](images/virtual-networks-overview.PNG)
+
+![NSG](images/network-security-groups.PNG)
+
+![Primary](images/primary-vnet-subnets.PNG)
+
+![Secondary](images/secondary-vnet-subnets.PNG)
+
+---
+
+## Phase 3 — Remote Backend State
+
+### Solution
+
+Azure Blob Remote Backend.
+
+### Proof
+
+![Storage](images/storage-account-overview.PNG)
+
+![Blob](images/blob-storage-statefile.PNG)
+
+![Backend](images/terraform-remote-backend-proof.PNG)
+
+---
+
+## Phase 4 — Monitoring
+
+### Solution
+
+Azure Log Analytics.
+
+### Proof
+
+![Monitoring](images/log-analytics-workspace.PNG)
+
+---
+
+## Phase 5 — Vault Integration
+
+### Solution
+
+Vault KV + Dynamic Credentials.
+
+### Proof
+
+![Vault](images/vault-secret-proof.png)
+
+![Dynamic](images/vault-dynamic-credentials.PNG)
+
+---
+
+## Phase 6 — Runtime Secret Retrieval
+
+### Solution
+
+Python Virtual Environment.
+
+Runtime secrets operational.
+
+---
+
+## Phase 7 — Terraform Module Migration
+
+### Created
+
+- Network Module
+- Compute Module
+- Security Module
+- Scaling Module
+
+### Proof
+
+![State](images/terraform-state-list.PNG)
+
+![Module](images/terraform-module-migration-proof.PNG)
+
+---
+
+## Phase 8 — Configuration Automation
+
+### Automated
+
+- Docker
+- Nginx
+- Linux Updates
+
+### Proof
+
+![Ansible](images/ansible-configuration-proof.PNG)
+
+---
+
+## Phase 9 — Enterprise Scaling
+
+### Implemented
+
+- VM Scale Set
+- Load Balancer
+
+### Proof
+
+![VMSS](images/vmss-proof.PNG)
+
+![LB](images/load-balancer-proof.PNG)
+
+---
+
+# 📈 Platform Capabilities
+
+✅ Infrastructure as Code
 
 ✅ Multi Region Deployment
 
 ✅ Disaster Recovery
 
-✅ Infrastructure as Code
-
-✅ Secret Rotation
-
 ✅ Dynamic Credentials
 
 ✅ Runtime Secret Retrieval
 
-✅ Remote Backend
-
 ✅ VM Scale Set
 
-✅ Load Balancer
-
 ✅ Monitoring
-
-✅ Auto Scaling
 
 ✅ Configuration Automation
 
 ---
 
-# 🔐 Security Features
-
-- HashiCorp Vault Integration
-- Dynamic Credential Rotation
-- Runtime Secret Retrieval
-- Remote Backend State Security
-- NSG Isolation
-- Multi Layer Network Segmentation
-- DR Architecture
-
----
-
-# 📈 Operational Excellence
-
-Implemented:
-
-- Infrastructure Automation
-- Terraform Modules
-- Azure Remote State Backend
-- Monitoring Visibility
-- Configuration Standardization
-- Secret Security
-- Platform Scalability
-
----
-
 # 🧠 Skills Demonstrated
 
-Azure Cloud
+Azure
 
 Terraform
 
@@ -338,35 +454,17 @@ HashiCorp Vault
 
 Infrastructure Automation
 
-Linux Administration
+Monitoring
 
 Disaster Recovery
+
+Networking
 
 DevOps Automation
 
 Cloud Operations
 
-Monitoring
-
-Networking
-
-Secret Management
-
-Configuration Management
-
----
-
-# 📈 Final Outcome
-
-Successfully designed and implemented a secure enterprise-grade Azure Infrastructure Automation Platform supporting:
-
-- Disaster Recovery
-- Multi Region Architecture
-- Secret Security
-- Infrastructure Scalability
-- Monitoring Visibility
-- Runtime Secret Retrieval
-- Configuration Automation
+Linux Administration
 
 ---
 
